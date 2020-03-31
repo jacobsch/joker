@@ -1,18 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joker Score Keeper</title>
-    <link rel="stylesheet" href="game/styles.css">
-</head> 
+  <meta charset="utf-8">
+  <title>Joker Score Keeper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Calculator for Unix permissions">
+  <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
 <body>
-<h2>Joker Score Keeper</h2>
-<h4>How many players?</h4>
-<form action="/game/index.html  ">
-    <input type="number" value="0">
-    <input type="submit" value="Start!">
-</form>
+  <h1>Joker Score Keeper</h1>
+  <div id="container">
+    <!-- user -->
+    <div class="category" id="user">
+      <div class="permissionLabel">user can</div>
+      <div class="read permission yes">
+        <div class="permissionLabel rwe" tabindex="0">read</div>
+      </div>
+      <div class="write permission yes">
+        <div class="permissionLabel rwe" tabindex="0">write</div>
+      </div>
+      <div class="execute permission yes">
+        <div class="permissionLabel rwe" tabindex="0">execute</div>
+      </div>
+    </div>
+    <!-- group -->
+    <div class="category" id="group">
+      <div class="permissionLabel">group can</div>
+      <div class="read permission yes">
+        <div class="permissionLabel rwe" tabindex="0">read</div>
+      </div>
+      <div class="write permission yes">
+        <div class="permissionLabel rwe" tabindex="0">write</div>
+      </div>
+      <div class="execute permission yes">
+        <div class="permissionLabel rwe" tabindex="0">execute</div>
+      </div>
+    </div>
+    <!-- other -->
+    <div class="category" id="other">
+      <div class="permissionLabel">others can</div>
+      <div class="read permission yes">
+        <div class="permissionLabel rwe" tabindex="0">read</div>
+      </div>
+      <div class="write permission yes">
+        <div class="permissionLabel rwe" tabindex="0">write</div>
+      </div>
+      <div class="execute permission yes">
+        <div class="permissionLabel rwe" tabindex="0">execute</div>
+      </div>
+    </div>
+
+  </div>
+  <p class="copy">By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
+  <script type="text/javascript" src="app.js"></script>
+  <noscript>
+    This website does not work without JavaScript!
+  </noscript>
 </body>
 
 </html>
