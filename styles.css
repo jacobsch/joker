@@ -26,19 +26,12 @@ body {
   box-sizing: border-box;
 }
 
-input {
-  border: none;
-}
-
-#clicktocopy>#short {
-  display: none;
-}
-
 h1 {
   color: rgba(44, 62, 80, 1);
   font-size: 25px;
   width: 100%;
   text-align: center;
+  margin: auto;
 }
 
 p {
@@ -61,10 +54,25 @@ p * {
   font-family: Georgia, serif;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+#game {
+  margin-top: 100px;
+  position: sticky;
+  text-align: center;
+
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 150px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 a,
@@ -90,6 +98,7 @@ a:hover {
   transition: 0.2s;
 }
 
+/*
 #other>.permissionLabel,
 #other>div>.permissionLabel {
   border-right: 0;
@@ -103,24 +112,7 @@ a:hover {
 .execute>.permissionLabel {
   border-bottom: 0;
 }
-
-.code {
-  outline: none;
-  width: 105px;
-  height: 30px;
-  font-size: 20px;
-  background-color: #aaa;
-  padding: 5px;
-}
-
-.red-notify {
-  color: rgba(236, 240, 241, 1);
-  background-color: rgba(231, 76, 60, 1);
-}
-
-.rwe {
-  position: relative;
-}
+*/
 
 noscript {
   width: 100%;
@@ -143,27 +135,8 @@ noscript {
 
 @media (min-width: 800px) {
 
-  .rwe:focus,
-  .rwe:hover {
-    font-size: 200%;
-    outline: 3px solid black;
-    outline-offset: -1px;
-    border: none;
-    box-sizing: padding-box;
-    z-index: 1000;
-    transition: 0.15s;
-  }
-  .rwe:hover {
-    box-shadow: 0.25px 0.25px 15px rgba(50, 50, 50, 0.5);
-    z-index: 10000;
-  }
-  #clicktocopy {
-    position: absolute;
-    bottom: 50px;
-    padding: 5px;
-  }
   h1 {
-    width: 420px;
+    width: 290px;
     left: 0;
     right: 0;
     padding-bottom: 8px;
@@ -194,22 +167,6 @@ noscript {
     float: left;
     /*border: 1px solid #2c3e50;*/
     border-top: 0;
-  }
-  .permissionLabel {
-    border-top: 0;
-    border-bottom: 2px solid #2c3e50;
-    border-left: 1px solid #2c3e50;
-    border-right: 1px solid #2c3e50;
-    vertical-align: middle;
-    height: 60px;
-    line-height: 60px;
-    padding: 0;
-    margin: auto;
-    /* font */
-    text-align: center;
-    /*font-variant: small-caps;*/
-    font-weight: 500;
-    font-size: 30px;
   }
 
   .category>.permissionLabel {
