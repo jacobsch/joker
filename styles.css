@@ -60,7 +60,7 @@ h1 {
   cursor: pointer;
 }
 #confirmHeader:hover {
-  color: #d4371c;
+  color: #991903;
   transition: .3s;
 }
 
@@ -106,6 +106,12 @@ input {
   height: 35px;
   width: 35px;
   font-size: 25px;
+}
+
+.nameInput {
+  margin-top: 10px;
+  width: 20%;
+  text-align: center;
 }
 
 #game {
@@ -235,19 +241,6 @@ noscript {
     border-top: 0;
   }
 
-  .category>.permissionLabel {
-    /*text-transform: uppercase;*/
-  }
-
-  .permission .permissionLabel {
-    font-weight: 400;
-    font-variant: normal;
-    height: 70px;
-    line-height: 70px;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-  }
   #octal {
     height: 80px;
     width: 200px;
@@ -270,18 +263,10 @@ noscript {
     bottom: 5px;
     right: 35px;
   }
+  
 }
 
 @media (max-width: 799px) {
-  #clicktocopy {
-    position: relative;
-    top: 2px;
-    left: 20px;
-    padding: 3px;
-    margin-right: 20px;
-    width: auto;
-  }
-
   h1 {
     padding-left: 10px;
     margin-top: 10px;
@@ -341,6 +326,12 @@ noscript {
     position: absolute;
     right: 20px;
   }
+
+  .nameInput {
+    margin-top: 10px;
+    width: 50%;
+  }
+  
 }
 
 @media (max-width: 420px) {
@@ -349,6 +340,10 @@ noscript {
   }
   #clicktocopy>#short {
     display: inline;
+  }
+  .nameInput {
+    margin-top: 10px;
+    width: 100%;
   }
 }
 

@@ -55,12 +55,22 @@ function startGame() {
     }
 }
 
+var x = '';
+var warnHeader = document.getElementById("warn");
+
 function confirm() {   
     playerCount = document.getElementById("input").value;
     playerCount = parseInt(playerCount);
 
+    if (isNaN(playerCount)){
+        alert("Please enter a valid number");
+    } else {
     for (let i = 0; i < playerCount; i++) {
-        console.log("What is player #" +(i+1)+"'s name?")
+        x += '<input class="nameInput" type="text" style="display: inline;"><br>'
+        
+    }
+    x += '<h2 id="startHeader" class="headerBtn" onclick="nameEntry()" style="display: inline-block;">Start</h2>'
+        playerCountPage.innerHTML = x;    
     }
 }
 
@@ -89,4 +99,3 @@ function template(data) {
         <time id="totalTime">0:00</time>
     `
 }
-
