@@ -33,6 +33,18 @@ h1 {
   text-align: center;
   margin: auto;
 }
+#newHeader {
+  color: #3576b8;
+  transition: .3s;
+}
+#newHeader:hover {
+  color: #344557;
+  transition: .3s;
+}
+
+#loadHeader {
+  color: #2ecc71;
+}
 
 p {
   position: absolute;
@@ -53,19 +65,27 @@ p {
 p * {
   font-family: Georgia, serif;
 }
-
-#game {
+#start {
+  margin: auto;
   margin-top: 100px;
   position: sticky;
+  width: 50%;
   text-align: center;
+}
 
+#game {
+  margin: auto;
+  margin-top: 100px;
+  position: sticky;
+  width: 50%;
+  text-align: center;
 }
 
 .column {
   float: left;
   width: 33.33%;
   padding: 10px;
-  height: 150px; /* Should be removed. Only for demonstration */
+  height: 100px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -73,6 +93,11 @@ p * {
   content: "";
   display: table;
   clear: both;
+}
+
+h4 {
+margin-top: 10px;
+float: right;
 }
 
 a,
@@ -218,6 +243,7 @@ noscript {
 
   h1 {
     padding-left: 10px;
+    margin-top: 10px;
   }
 
   .permissionLabel {

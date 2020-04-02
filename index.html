@@ -11,8 +11,13 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body onload="welcome()">
   <h1>Joker Score Keeper</h1>    
+  <div id="start">
+    <h2 id="welcomeHeader" style="display: inline;"> </h2>
+    <h2 id="newHeader" class="headerBtn" onclick="newGame()" style="display: inline;">New Game?</h2>
+    <h2 id="loadHeader" class="headerBtn" onclick="loadGame()">Load Game?</h2>
+  </div>
 
   <div id="game">
     <div class="row">
@@ -20,7 +25,7 @@
         <div class="column" style="background-color:#bbb;">Col2</div>
         <div class="column" style="background-color:#ccc ;">Col3</div>
       </div>
-      <button onclick="newRound()">New Round</button>
+      <h4 onclick="newRound();">New Round</h4>
   </div>
   
   <p class="copy">By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
