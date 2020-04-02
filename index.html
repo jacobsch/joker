@@ -16,16 +16,15 @@
   <div id="start">
     <h2 id="welcomeHeader" style="display: inline;"> </h2>
     <h2 id="newHeader" class="headerBtn" onclick="newGame()" style="display: inline-block;">New Game?</h2>
+    <div id="playerCountPage">
+      <h2 style="display: inline;">How many players?</h2>
+      <input id="input" type="number" min="2" max="10" style="display: inline;">
+      <h2 id="startHeader" class="headerBtn" onclick="startGame()" style="display: inline;">Start</h2>
+      <h2 id="confirmHeader" class="headerBtn" onclick="startGame()" style="display: none;">Confirm</h2>
+    </div>
   </div>
 
-  <div id="playerCount">
-    <h2 style="display: inline;">How many players?</h2>
-    <input type="number" min="2" max="6" style="display: inline;">
-    <h2 id="newHeader" class="headerBtn" onclick="newGame()" style="display: inline;">Start</h2>
-  </div>
-  
   <h2 id="loadHeader" class="headerBtn" onclick="loadGame()">Load Game?</h2>
-
 
   <div id="game">
     <div class="row">

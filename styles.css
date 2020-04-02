@@ -44,6 +44,26 @@ h1 {
   transition: .3s;
 }
 
+#startHeader {
+  color: #3576b8;
+  transition: .3s;
+  cursor: pointer;
+}
+#startHeader:hover {
+  color: #2ecc71;
+  transition: .3s;
+}
+
+#confirmHeader {
+  color: #2ecc71;
+  transition: .3s;
+  cursor: pointer;
+}
+#confirmHeader:hover {
+  color: #d4371c;
+  transition: .3s;
+}
+
 #loadHeader {
   color: #2ecc71;
 }
@@ -76,12 +96,16 @@ p * {
   text-align: center;
 }
 
-#playerCount {
+#playerCountPage {
   margin-left: auto;
-  margin-top: 100px;
-  position: fixed;
   width: 50%;
   text-align: center;
+}
+
+input {
+  height: 35px;
+  width: 35px;
+  font-size: 25px;
 }
 
 #game {

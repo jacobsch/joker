@@ -11,6 +11,7 @@ with names of players followed by recently played date
 
 #TODO2
 add first row position sticky so names stay
+
 */
 
 //const videoplayer = videoPlayerTemplate(data);
@@ -22,13 +23,17 @@ var game = document.getElementById("game");
 var newHeader = document.getElementById("newHeader");
 var loadHeader = document.getElementById("loadHeader");
 var welcomeHeader = document.getElementById("welcomeHeader");
-var playerCount = document.getElementById("playerCount");
+var startHeader = document.getElementById("startHeader");
+var confirmHeader = document.getElementById("confirmHeader");
+var playerCountPage = document.getElementById("playerCountPage");
 var start = document.getElementById("start");
+var playerCount;
+var hasStarted = false;
 
 function welcome() {
     console.log("Welcome");
     game.style.display = "none";
-
+    playerCountPage.style.display = "none";
     // load persistent store after the DOM has loaded
     // store = new Persist.Store('joker');
 
@@ -40,9 +45,30 @@ function welcome() {
     }
 }
 
+function startGame() {
+    if (hasStarted === false){
+        hasStarted = true;
+        startHeader.style.display = "none";
+        confirmHeader.style.display = "inline";
+    } else {
+        confirm();
+    }
+}
+
+function confirm() {   
+    playerCount = document.getElementById("input").value;
+    playerCount = parseInt(playerCount);
+
+    for (let i = 0; i < playerCount; i++) {
+        console.log("What is player #" +(i+1)+"'s name?")
+    }
+}
+
 function newGame() {
-    start.style.display = "none";
-    playerCount.style.display = "inline";
+    welcomeHeader.style.display = "none";
+    newHeader.style.display = "none";
+    playerCountPage.style.display = "inline";
+    // once Start is press change text to confirm then go
 }    
 
 function loadGame() {
