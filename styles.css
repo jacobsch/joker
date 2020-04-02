@@ -32,10 +32,12 @@ h1 {
   width: 100%;
   text-align: center;
   margin: auto;
+  position: sticky;
 }
 #newHeader {
   color: #3576b8;
   transition: .3s;
+  cursor: pointer;
 }
 #newHeader:hover {
   color: #344557;
@@ -65,10 +67,19 @@ p {
 p * {
   font-family: Georgia, serif;
 }
+
 #start {
   margin: auto;
   margin-top: 100px;
   position: sticky;
+  width: 50%;
+  text-align: center;
+}
+
+#playerCount {
+  margin-left: auto;
+  margin-top: 100px;
+  position: fixed;
   width: 50%;
   text-align: center;
 }
@@ -114,12 +125,18 @@ a:hover {
 }
 
 .no {
+  /*
   background-color: #e74c3c;
+  */
+  color: #e74c3c;
   transition: 0.2s;
 }
 
 .yes {
+  /*
   background-color: #2ecc71;
+  */
+  color: #2ecc71;
   transition: 0.2s;
 }
 
