@@ -9,8 +9,10 @@ const car = {
 create function to generate name -> display a list of games
 with names of players followed by recently played date
 */
+
+//const videoplayer = videoPlayerTemplate(data);
+//document.getElementById('myRandomElement').insertAdjacentHTML("afterbegin", videoplayer);
 // global object
-var store;
 
 // HTML References
 var game = document.getElementById("game");
@@ -33,12 +35,9 @@ function welcome() {
 }
 
 function newGame() {
-    // load persistent store after the DOM has loaded
-    store = new Persist.Store('joker');
-    // store.set
-    location.reload();
+
 }    
 
 function loadGame() {
-    console.log(2);
+
 }
