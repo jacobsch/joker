@@ -55,6 +55,7 @@ function startGame() {
     }
 }
 
+// '+(i+1)+'
 var x = '';
 var warnHeader = document.getElementById("warn");
 
@@ -66,12 +67,42 @@ function confirm() {
         alert("Please enter a valid number");
     } else {
     for (let i = 0; i < playerCount; i++) {
-        x += '<input class="nameInput" type="text" style="display: inline;"><br>'
+        x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
         
     }
-    x += '<h2 id="startHeader" class="headerBtn" onclick="nameEntry()" style="display: inline-block;">Start</h2>'
+    x += '<br>'
+    x += '<h2 id="startHeader" class="headerBtn" onclick="nameEntry()" style="display: inline;">Start</h2>'
         playerCountPage.innerHTML = x;    
     }
+}
+
+var allGood = [];
+function nameEntry() {
+    for (let i = 0; i <playerCount; i++){
+        playerNum = document.getElementById("player"+(i+1));
+        if ((playerNum.value) == "") {
+            allGood[i] = false;
+            playerNum.style.borderColor = "red";
+
+        } else {
+            allGood[i] = true;
+            playerNum.style.borderColor = "green";
+        }
+    }
+
+    /*
+    #TODO FIX
+    if (hasDuplicates(allGood)) {
+        document.getElementById("extra").innerHTML = 'Warning, there are duplicate names!';
+    }
+    */
+    if (Object.values(allGood).every(item => item === true)){
+        showGame();
+    }
+}
+
+function hasDuplicates(array) {
+    return (new Set(array)).size !== array.length;
 }
 
 function newGame() {
@@ -83,6 +114,10 @@ function newGame() {
 
 function loadGame() {
 
+}
+
+function showGame() {
+    
 }
 
 function template(data) {
