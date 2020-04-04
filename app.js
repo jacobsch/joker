@@ -1,4 +1,4 @@
-//app.js written by Jacob Schwartz
+// app.js written by Jacob Schwartz
 /*
 
 const car = {
@@ -27,6 +27,7 @@ var startHeader = document.getElementById("startHeader");
 var confirmHeader = document.getElementById("confirmHeader");
 var playerCountPage = document.getElementById("playerCountPage");
 var start = document.getElementById("start");
+
 var playerCount;
 var hasStarted = false;
 
@@ -34,15 +35,33 @@ function welcome() {
     console.log("Welcome");
     game.style.display = "none";
     playerCountPage.style.display = "none";
-    // load persistent store after the DOM has loaded
-    // store = new Persist.Store('joker');
 
-    if (typeof store == "undefined") {
+    if (window.localStorage.length == 0) {
         welcomeHeader.innerHTML = "Welcome, ";
         loadHeader.style.display = "none";
     } else {
         loadHeader.style.display = "inline";
     }
+}
+
+var btnCounter=1;
+function startBtn() {
+    if (btnCounter == 1) {
+        btnCounter++
+        startHeader.style.display = "none";
+        confirmHeader.style.display = "inline";
+    } else if (btnCounter == 2) {
+        confirm();        
+    } else if (btnCounter == 3) {
+        nameEntry();
+    } else if (btnCounter == 4) {
+        showGame();
+    } else {
+        // err ctrl
+        alert("internal error")
+        location.reload();
+    }
+
 }
 
 function startGame() {
@@ -66,17 +85,24 @@ function confirm() {
     if (isNaN(playerCount)){
         alert("Please enter a valid number");
     } else {
-    for (let i = 0; i < playerCount; i++) {
-        x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
+        var obj = {
+            "playerCount" : playerCount
+        }
+        for (let i = 0; i < playerCount; i++) {
+            x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
         
-    }
-    x += '<br>'
-    x += '<h2 id="startHeader" class="headerBtn" onclick="nameEntry()" style="display: inline;">Start</h2>'
+        }
+        x += '<br>'
+        x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>'
         playerCountPage.innerHTML = x;    
+        btnCounter++
     }
 }
 
+// name entry
 var allGood = [];
+var gameName = "";
+// make function called next and call nameEntry and others
 function nameEntry() {
     for (let i = 0; i <playerCount; i++){
         playerNum = document.getElementById("player"+(i+1));
@@ -86,6 +112,7 @@ function nameEntry() {
 
         } else {
             allGood[i] = true;
+            gameName += playerNum.value + "-"; 
             playerNum.style.borderColor = "green";
         }
     }
@@ -97,7 +124,7 @@ function nameEntry() {
     }
     */
     if (Object.values(allGood).every(item => item === true)){
-        showGame();
+        btnCounter++
     }
 }
 
@@ -116,8 +143,15 @@ function loadGame() {
 
 }
 
-function showGame() {
-    
+function showGame(/* game id */) {
+    alert(true);
+}
+
+function newRound() {
+    // not used but for the future...
+    /* 
+    create a mini array for each round maybe and then run showGame again
+    */
 }
 
 function template(data) {
