@@ -131,6 +131,7 @@ input {
   height: 50px; /* Should be removed. Only for demonstration */
   font-size: 22px;
   color: black;
+  display: inline-block;
 }
 
 /* Clear floats after the columns */

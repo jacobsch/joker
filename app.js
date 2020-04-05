@@ -14,8 +14,6 @@ add first row position sticky so names stay
 
 */
 
-//const videoplayer = videoPlayerTemplate(data);
-//document.getElementById('myRandomElement').insertAdjacentHTML("afterbegin", videoplayer);
 // global object
 
 // HTML References
@@ -63,7 +61,7 @@ function startBtn() {
 		playerCountPage.style.display = "none";
 		game.style.display = "block";
 		joker = jason();
-        showGame();
+        game.innerHTML = showNames();
     } else {
         // err ctrl
         alert("internal error")
@@ -160,13 +158,21 @@ function jason() {
 	return obj
 }
 
-var y = '';
-function showGame() {
-	for (let i = 0; i < joker.playerCount; i++) {
+var y = ``;
+function showNames() {
+    y += `<div class="row">`;
+	for (let i = 0; i < joker.playerCount; i++) { 
+		if (i % 2 == 0) {
+			y += `<div class="column" id="${joker.player[i]}" style="background-color:#aaa;">${joker.player[i]}</div>`
+		}else {
+			y += `<div class="column" id="${joker.player[i]}" style="background-color:#bbb;">${joker.player[i]}</div>`
+		}
 		// show names and create rows for numbers
 		// <div class="column" style="background-color:#aaa;">Col1</div>
         // <div class="column" style="background-color:#bbb;">Col2</div>		
-	}
+    }
+    y += `</div>`
+    return y;
 }
 
 function newRound() {
