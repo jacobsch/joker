@@ -19,14 +19,19 @@ add first row position sticky so names stay
 // global object
 
 // HTML References
-var game = document.getElementById("game");
-var newHeader = document.getElementById("newHeader");
-var loadHeader = document.getElementById("loadHeader");
-var welcomeHeader = document.getElementById("welcomeHeader");
-var startHeader = document.getElementById("startHeader");
-var confirmHeader = document.getElementById("confirmHeader");
-var playerCountPage = document.getElementById("playerCountPage");
-var start = document.getElementById("start");
+const newHeader = document.getElementById("newHeader");
+const loadHeader = document.getElementById("loadHeader");
+const welcomeHeader = document.getElementById("welcomeHeader");
+const startHeader = document.getElementById("startHeader");
+const confirmHeader = document.getElementById("confirmHeader");
+const playerCountPage = document.getElementById("playerCountPage");
+const start = document.getElementById("start");
+const warnHeader = document.getElementById("warn");
+const game = document.getElementById("game");
+const row = document.getElementsByClassName("row");
+
+// CURRENT GAME ARRAY
+var joker;
 
 var playerCount;
 var hasStarted = false;
@@ -55,6 +60,9 @@ function startBtn() {
     } else if (btnCounter == 3) {
         nameEntry();
     } else if (btnCounter == 4) {
+		playerCountPage.style.display = "none";
+		game.style.display = "block";
+		joker = jason();
         showGame();
     } else {
         // err ctrl
@@ -64,20 +72,8 @@ function startBtn() {
 
 }
 
-function startGame() {
-    if (hasStarted === false){
-        hasStarted = true;
-        startHeader.style.display = "none";
-        confirmHeader.style.display = "inline";
-    } else {
-        confirm();
-    }
-}
-
 // '+(i+1)+'
 var x = '';
-var warnHeader = document.getElementById("warn");
-
 function confirm() {   
     playerCount = document.getElementById("input").value;
     playerCount = parseInt(playerCount);
@@ -85,23 +81,22 @@ function confirm() {
     if (isNaN(playerCount)){
         alert("Please enter a valid number");
     } else {
-        var obj = {
-            "playerCount" : playerCount
-        }
+
         for (let i = 0; i < playerCount; i++) {
             x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
-        
         }
         x += '<br>'
         x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>'
         playerCountPage.innerHTML = x;    
-        btnCounter++
+        btnCounter++;
     }
 }
 
 // name entry
 var allGood = [];
+var names = [];
 var gameName = "";
+
 // make function called next and call nameEntry and others
 function nameEntry() {
     for (let i = 0; i <playerCount; i++){
@@ -111,7 +106,8 @@ function nameEntry() {
             playerNum.style.borderColor = "red";
 
         } else {
-            allGood[i] = true;
+			allGood[i] = true;
+			names[i] = playerNum.value;
             gameName += playerNum.value + "-"; 
             playerNum.style.borderColor = "green";
         }
@@ -124,10 +120,12 @@ function nameEntry() {
     }
     */
     if (Object.values(allGood).every(item => item === true)){
-        btnCounter++
+		gameName = gameName.slice(0, -1);
+		btnCounter++
     }
 }
 
+// #TODO FIX
 function hasDuplicates(array) {
     return (new Set(array)).size !== array.length;
 }
@@ -140,11 +138,35 @@ function newGame() {
 }    
 
 function loadGame() {
-
+	// Object.entries(localStorage) // to see all the keys
 }
 
-function showGame(/* game id */) {
-    alert(true);
+function jason() {
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+	today = mm + '/' + dd + '/' + yyyy;
+
+	var obj = {
+		name: gameName, 
+		lastPlayed: today,
+		roundCount: 1,
+		playerCount: playerCount,
+		player: names,
+		round1: {}
+	};
+
+	return obj
+}
+
+var y = '';
+function showGame() {
+	for (let i = 0; i < joker.playerCount; i++) {
+		// show names and create rows for numbers
+		// <div class="column" style="background-color:#aaa;">Col1</div>
+        // <div class="column" style="background-color:#bbb;">Col2</div>		
+	}
 }
 
 function newRound() {
