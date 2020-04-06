@@ -163,9 +163,9 @@ function showNames() {
     y += `<div class="row">`;
 	for (let i = 0; i < joker.playerCount; i++) { 
 		if (i % 2 == 0) {
-			y += `<div class="column" id="${joker.player[i]}" style="background-color:#aaa;">${joker.player[i]}</div>`
+			y += `<div class="column" id="${joker.player[i]}" style="background-color:#cfcfcf;">${joker.player[i]}</div>`
 		}else {
-			y += `<div class="column" id="${joker.player[i]}" style="background-color:#bbb;">${joker.player[i]}</div>`
+			y += `<div class="column" id="${joker.player[i]}" style="background-color:#e8e8e8;">${joker.player[i]}</div>`
 		}
 		// show names and create rows for numbers
 		// <div class="column" style="background-color:#aaa;">Col1</div>
