@@ -48,6 +48,7 @@ function welcome() {
 }
 
 var btnCounter=1;
+var newRoundBtn = `<h4 onclick="newRound();">New Round</h4>`;
 function startBtn() {
     if (btnCounter == 1) {
         btnCounter++
@@ -62,6 +63,7 @@ function startBtn() {
 		game.style.display = "block";
 		joker = jason();
         game.innerHTML = showNames();
+        game.insertAdjacentHTML("beforeend", newRoundBtn)
     } else {
         // err ctrl
         alert("internal error")
@@ -78,6 +80,8 @@ function confirm() {
 
     if (isNaN(playerCount)){
         alert("Please enter a valid number");
+    } else if ((playerCount < 2 ) || (playerCount > 9)) {
+        alert("Please enter a number between 2-9");
     } else {
 
         for (let i = 0; i < playerCount; i++) {
@@ -102,7 +106,6 @@ function nameEntry() {
         if ((playerNum.value) == "") {
             allGood[i] = false;
             playerNum.style.borderColor = "red";
-
         } else {
 			allGood[i] = true;
 			names[i] = playerNum.value;
@@ -118,7 +121,7 @@ function nameEntry() {
     }
     */
     if (Object.values(allGood).every(item => item === true)){
-		gameName = gameName.slice(0, -1);
+		gameName = gameName.slice(0, -1); // Removes the final -
 		btnCounter++
     }
 }
@@ -149,27 +152,33 @@ function jason() {
 	var obj = {
 		name: gameName, 
 		lastPlayed: today,
-		roundCount: 1,
+		roundCount: 0,
 		playerCount: playerCount,
 		player: names,
 		round1: {}
 	};
-
+    
 	return obj
 }
 
 var y = ``;
 function showNames() {
     y += `<div class="row">`;
-	for (let i = 0; i < joker.playerCount; i++) { 
+	for (let i = 0; i < joker.playerCount; i++) {
+        var id = joker.player[i].toLowerCase();
+        // Easter Egg Start
+        if (id == "jana") {
+            joker.player[i] += "🍌"
+        }
+        // EE End
+        id += joker.roundCount;
 		if (i % 2 == 0) {
-			y += `<div class="column" id="${joker.player[i]}" style="background-color:#cfcfcf;">${joker.player[i]}</div>`
+            // even
+			y += `<div class="column" id="${id}" style="background-color:#cfcfcf;">${joker.player[i]}</div>`
 		}else {
-			y += `<div class="column" id="${joker.player[i]}" style="background-color:#e8e8e8;">${joker.player[i]}</div>`
-		}
-		// show names and create rows for numbers
-		// <div class="column" style="background-color:#aaa;">Col1</div>
-        // <div class="column" style="background-color:#bbb;">Col2</div>		
+            // odd
+			y += `<div class="column" id="${id}" style="background-color:#e8e8e8;">${joker.player[i]}</div>`
+		}	
     }
     y += `</div>`
     return y;
@@ -180,19 +189,27 @@ function newRound() {
     /* 
     create a mini array for each round maybe and then run showGame again
     */
+    for (let i = 0; i < joker.playerCount; i++) {
+
+    }
 }
 
-function template(data) {
-    return `
-        <h1>${data.header}</h1>
-        <p>${data.subheader}</p>
-        <a href="#" id="playButton">Play</a>
-        <a href="javascript: void(0)" id="muteUnmute">Mute</a>
-        <div id="progressBarOuter"> 
-            <div id="bytesLoaded"></div>
-            <div id="progressBar"></div>
-        </div>
-        <time id="currentTime">0:00</time>
-        <time id="totalTime">0:00</time>
-    `
-}
+/*
+function validate(evt) {
+    var theEvent = evt || window.event;
+  
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+    // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+*/

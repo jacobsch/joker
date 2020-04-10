@@ -9,10 +9,10 @@
   <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
-  <link rel="manifest" href="/img/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+  <link rel="manifest" href="img/site.webmanifest">
 </head>
 
 <body onload="welcome()">
@@ -23,7 +23,7 @@
     <h2 id="newHeader" class="headerBtn" onclick="newGame()" style="display: inline-block;">New Game?</h2>
     <div id="playerCountPage">
       <h2 id="warn" style="display: inline;">How many players?</h2>
-      <input id="input" type="number" min="2" max="9" style="display: inline;">
+      <input id="input" type="text" pattern="[0-9]" maxlength="1" style="display: inline;"> <!-- onkeypress='validate(event)' was taken out -->
       <h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>
       <h2 id="confirmHeader" class="headerBtn" onclick="startBtn()" style="display: none;">Confirm</h2>
     </div>
@@ -32,16 +32,9 @@
   <h2 id="loadHeader" class="headerBtn" onclick="loadGame()">Load Game?</h2>
 
   <div id="game">
-    <div class="row">
-        <!-- 
-        <div class="column" style="background-color:#bbb;">Col1</div>
-        <div class="column" style="background-color:#bbb;">Col2</div>
-        <div class="column" style="background-color:#ccc ;">Col3</div> -->
-      </div>
-      <h4 onclick="newRound();">New Round</h4>
   </div>
   
-  <p class="copy">By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
+  <p>By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
   <script type="text/javascript" src="app.js"></script>
   <noscript>
     This website does not work without JavaScript!
