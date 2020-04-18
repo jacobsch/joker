@@ -8,36 +8,39 @@
   <meta name="description" content="Calculator for Unix permissions">
   <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-
+  <meta name="apple-mobile-web-app-title" content="Score Keeper">
   <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
   <link rel="manifest" href="img/site.webmanifest">
 </head>
 
-<body onload="welcome()">
-  <h1>Joker Score Keeper</h1>    
+<body>
+  <h1>Joker Score Keeper</h1>
 
   <div id="start">
 	<h2 id="welcomeHeader" style="display: inline;"> </h2>
 	<h2 id="newHeader" class="headerBtn" style="display: inline-block;">New Game?</h2>
 	<div id="playerCountPage">
 	  <h2 id="warn" style="display: inline;">How many players?</h2>
-	  <input id="input" type="text" pattern="[0-9]*" maxlength="1" style="display: inline;"> <!-- onkeypress='validate(event)' was taken out -->
+	  <input id="input" type="text" maxlength="1" onkeypress='validate(event)' style="display: inline;">
 	  <h2 id="startHeader" class="headerBtn" style="display: inline;">Start</h2>
 	</div>
   </div>
 
-  <h2 id="loadHeader" class="headerBtn">Load Game?</h2>
+  <div id="load">
+	<h2 id="loadHeader" class="headerBtn">Load Game?</h2>
+  </div>
 
   <div id="game">
   </div>
   
-  <p>By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
-  <script type="text/javascript" src="app.js"></script>
-  <noscript>
-	This website does not work without JavaScript!
-  </noscript>
+  	<p>By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
+	<script type="text/javascript" src="lib/dynamicListener.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+	<noscript>
+		This website does not work without JavaScript!
+	</noscript>
+	  
 </body>
-
 </html>

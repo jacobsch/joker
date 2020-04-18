@@ -1,10 +1,6 @@
 // app.js written by Jacob Schwartz
 /*
 
-const car = {
-	model: 'Fiesta'
-}
-
 #TODO
 create function to generate name -> display a list of games
 with names of players followed by recently played date
@@ -20,57 +16,34 @@ add first row position sticky so names stay
 const newHeader = document.getElementById("newHeader");
 const loadHeader = document.getElementById("loadHeader");
 const welcomeHeader = document.getElementById("welcomeHeader");
-const startHeader = document.getElementById("startHeader");
 const playerCountPage = document.getElementById("playerCountPage");
 const start = document.getElementById("start");
 const warnHeader = document.getElementById("warn");
 const game = document.getElementById("game");
 const row = document.getElementsByClassName("row");
-var newRoundBtn = document.getElementById("newRoundBtn")
+const startHeader = document.getElementById("startHeader");
 
-
-// CURRENT GAME ARRAY
-var joker;
-
-var playerCount;
-var hasStarted = false;
-
+// CURRENT GAME OBJ
+let joker;
+// #TODO -> Create function with parameter for option of style.display and element, class or tag
 // Opening Function, will run on load
-function welcome() {
-	console.log("Welcome");
+window.addEventListener('load',() => {
+    document.getElementsByTagName("h1")
 	game.style.display = "none";
 	playerCountPage.style.display = "none";
-
 	if (window.localStorage.length == 0) {
 		welcomeHeader.innerHTML = "Welcome, ";
 		loadHeader.style.display = "none";
 	} else {
 		loadHeader.style.display = "inline";
 	}
-}
+});
 
-startHeader.addEventListener("click", startBtn);
 var btnCounter=1;
-function startBtn() {
-	var newRoundBtnHTML = `<h4 id="newRoundBtn" onclick="newRound();">New Round</h4>`;
-	if (btnCounter == 1) {
-		confirm();
-	} else if (btnCounter == 2) {
-		nameEntry();
-	} else if (btnCounter == 3) {
-		playerCountPage.style.display = "none";
-		game.style.display = "block";
-		joker = jason();
-		game.innerHTML = showNames();
-		game.insertAdjacentHTML("afterend", newRoundBtnHTML)
-	} else {
-		// err ctrl
-		alert("internal error")
-		location.reload();
-	}
-}
 
+// Player Count Page
 // '+(i+1)+'
+let playerCount;
 function confirm() {   
 	var x = '';
 	playerCount = document.getElementById("input").value;
@@ -81,22 +54,21 @@ function confirm() {
 	} else if ((playerCount < 2 ) || (playerCount > 9)) {
 		alert("Please enter a number between 2-9");
 	} else {
-
 		for (let i = 0; i < playerCount; i++) {
 			x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
 		}
-		x += '<br>'
-		x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>'
-		playerCountPage.innerHTML = x;    
-		btnCounter++;
+		x += '<br>';
+        x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>';
+        playerCountPage.innerHTML = x;
+        //start.insertAdjacentHTML("beforeend", '<h2 id="startHeader" class="headerBtn" style="display: inline;">Start</h2>');
+        btnCounter++;
 	}
 }
 
-// name entry
+// NAME ENTRY
 var names = [];
 var gameName = "";
 
-// make function called next and call nameEntry and others
 function nameEntry() {
 	var allGood = [];
 
@@ -111,38 +83,38 @@ function nameEntry() {
 			gameName += playerNum.value + "-"; 
 			playerNum.style.borderColor = "green";
 		}
-	}
-
-	/*
-	#TODO FIX
-	if (hasDuplicates(allGood)) {
-		document.getElementById("extra").innerHTML = 'Warning, there are duplicate names!';
-	}
-	*/
-	if (Object.values(allGood).every(item => item === true)){
+	}	
+	if ((hasDuplicates(names).length) > 0) {
+		start.innerHTML += '<br> Please use unique names!';
+	} else if (Object.values(allGood).every(item => item === true)){
 		gameName = gameName.slice(0, -1); // Removes the final -
 		btnCounter++
+	} else {
+		// err control, shouldn't happen though
 	}
 }
 
 // #TODO FIX
-function hasDuplicates(array) {
-	return (new Set(array)).size !== array.length;
-}
+// Duplicate Check
+let hasDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
 
-newHeader.addEventListener("click", newGame);
-function newGame() {
+// NEW GAME
+newHeader.addEventListener("click", () => {
 	welcomeHeader.style.display = "none";
 	newHeader.style.display = "none";
-	playerCountPage.style.display = "inline";
+	loadHeader.style.display = "none";
+    playerCountPage.style.display = "inline";
+    startHeader.addEventListener("click", startBtn);
 	// once Start is press change text to confirm then go
-}    
+});
 
-function loadGame() {
+// LOAD GAME
+loadHeader.addEventListener("click", () =>{	
 	// Object.entries(localStorage) // to see all the keys
-}
+});
 
-function jason() {
+
+const jason = () => {
 	var obj = {
 		name: gameName, 
 		lastPlayed: getDate(),
@@ -151,7 +123,6 @@ function jason() {
 		player: names,
 		round1: {}
 	};
-	
 	return obj
 }
 
@@ -179,6 +150,7 @@ function showNames() {
 	return y;
 }
 
+var spans;
 function newRound() {
 	var z = `<div class="row">`;
 	joker.roundCount++
@@ -186,9 +158,7 @@ function newRound() {
 	create a mini array for each round maybe and then run showGame again
 	*/
 	for (let i = 0; i < joker.playerCount; i++) {
-		var id = joker.player[i].toLowerCase();
-		id += joker.roundCount;
-		var inputId = id+'input';
+		var id = getId(i);
 		var color;
 		if (i % 2 == 0) {
 			// even
@@ -197,26 +167,65 @@ function newRound() {
 			// odd
 			color = `#e8e8e8`;
 		}
-		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" pattern="[0-9]*" inputmode="numeric"> <span onclick="inputConfirm(${id})" id="${id+'i'}">&#10003;</span></input></div>`
-	//pattern="[0-9]*"
+		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" pattern="[0-9]*" inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input></div>`;
+		//pattern="[0-9]*"
 	}
 	z += `</div>`;
-	game.insertAdjacentHTML("beforeend", z);
+	game.insertAdjacentHTML("beforeend", z); // Injecting HTML Row
+	// Adding Functionality to checkmarks
+		for (let l = 0; l < joker.playerCount; l++) {
+			spans = row[joker.roundCount].getElementsByTagName('span');
+			spans[l].addEventListener('click', (l) => {
+				console.log(l);
+				// return score
+			});
+	}
 	newRoundBtn = document.getElementById("newRoundBtn");
 	newRoundBtn.style.display = "none";
-
 }
 
+/*
 function inputConfirm(id) {
-	var spesh = id;
-	var txt = document.getElementById(spesh);
-	var inputScore = document.getElementById(spesh+"nput");
-	var score = inputScore.value;
-	var collum = spesh.slice(0, -1); // Removes the final 'i'
-	collum = document.getElementById(collum);
-	collum.innerHTML = score;
-	inputScore.style.display = "none";
-	txt.style.display = "none";
+	var collumnId = id;
+	collumnId = collumnId.toString();
+	alert(collumnId);
+	collumnId = collumnId.slice(0, -1); // Removes the final i
+	alert(collumnId);
+	collumnId = collumnId.substring(0, collumnId.length - 1); // Removes the final i
+	var collumn = document.getElementById(collumnId); // collumn (box)
+	var span = document.getElementById(id+"i") // span
+	var input  = document.getElementById(id+"input") // input
+	var score = parseInt(input.value);
+	// span.style.display = "none"; 
+	// input.style.display = "none";
+	// collumn.innerText = score;
+	alert(score);
+}
+*/
+
+const startBtn = () => {
+	if (btnCounter == 1) {
+		confirm();
+	} else if (btnCounter == 2) {
+        nameEntry();
+	} else if (btnCounter == 3) {
+		playerCountPage.style.display = "none";
+		game.style.display = "block";
+		joker = jason();
+		game.innerHTML = showNames();
+		game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
+		newRoundBtn.addEventListener("click", newRound);
+	} else {
+		// err ctrl
+		alert("internal error")
+		location.reload();
+	}
+}
+
+function getId(index) {
+	var id = joker.player[index].toLowerCase();
+	id += joker.roundCount;
+	return id;
 }
 
 function getDate() {
@@ -228,7 +237,6 @@ function getDate() {
 	return today;
 }
 
-/*
 function validate(evt) {
 	var theEvent = evt || window.event;
   
@@ -240,10 +248,9 @@ function validate(evt) {
 		var key = theEvent.keyCode || theEvent.which;
 		key = String.fromCharCode(key);
 	}
-	var regex = /[0-9]|\./;
+	var regex = /^[\d-]+$/;
 	if( !regex.test(key) ) {
 	  theEvent.returnValue = false;
 	  if(theEvent.preventDefault) theEvent.preventDefault();
 	}
   }
-*/
