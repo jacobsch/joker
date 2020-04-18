@@ -86,6 +86,11 @@ body {
 	width: 50%;
 	text-align: center;
   }
+
+  #load {
+	  margin-top: 10px;
+	  text-align: center;
+  }
   
   #playerCountPage {
 	margin-left: auto;
