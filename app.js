@@ -51,8 +51,8 @@ function confirm() {
 
 	if (isNaN(playerCount)){
 		alert("Please enter a valid number");
-	} else if ((playerCount < 2 ) || (playerCount > 9)) {
-		alert("Please enter a number between 2-9");
+	} else if ((playerCount < 2 ) || (playerCount > 7)) {
+		alert("Please enter a number between 2-7");
 	} else {
 		for (let i = 0; i < playerCount; i++) {
 			x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
@@ -72,7 +72,7 @@ var gameName = "";
 function nameEntry() {
 	var allGood = [];
 
-	for (let i = 0; i <playerCount; i++){
+	for (let i = 0; i < playerCount; i++){
 		playerNum = document.getElementById("player"+(i+1));
 		if ((playerNum.value) == "") {
 			allGood[i] = false;
@@ -114,17 +114,7 @@ loadHeader.addEventListener("click", () =>{
 });
 
 
-const jason = () => {
-	var obj = {
-		name: gameName, 
-		lastPlayed: getDate(),
-		roundCount: 0,
-		playerCount: playerCount,
-		player: names,
-		round1: {}
-	};
-	return obj
-}
+
 
 function showNames() {
 	var y = `<div class="row">`;
@@ -150,13 +140,13 @@ function showNames() {
 	return y;
 }
 
+var roundName;
+var allClicked = 1;
 var spans;
 function newRound() {
-	var z = `<div class="row">`;
-	joker.roundCount++
-	/* 
-	create a mini array for each round maybe and then run showGame again
-	*/
+    var z = `<div class="row">`;
+	joker.roundCount++ // Round Count goes up
+    joker["round"+joker.roundCount] = makeRound(); // Creating an object to put this rounds scores into
 	for (let i = 0; i < joker.playerCount; i++) {
 		var id = getId(i);
 		var color;
@@ -167,41 +157,56 @@ function newRound() {
 			// odd
 			color = `#e8e8e8`;
 		}
-		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" pattern="[0-9]*" inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input></div>`;
+		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" onkeypress='validate(event)' inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input></div>`;
 		//pattern="[0-9]*"
 	}
 	z += `</div>`;
-	game.insertAdjacentHTML("beforeend", z); // Injecting HTML Row
-	// Adding Functionality to checkmarks
+    game.insertAdjacentHTML("beforeend", z); // Injecting HTML Row
+
+    // Adding Functionality to checkmarks
 		for (let l = 0; l < joker.playerCount; l++) {
-			spans = row[joker.roundCount].getElementsByTagName('span');
-			spans[l].addEventListener('click', (l) => {
-				console.log(l);
+            spans = row[joker.roundCount].getElementsByTagName('span');
+            
+			spans[l].addEventListener('click', function () {
+                var input = this.previousElementSibling;
+                var onlyName = this.parentNode.id.replace(/[0-9]/g, '');
+				if ((input.value == "") || (input.value == undefined)) {
+					input.style.borderColor = "red";
+				} else {
+                input.style.display = "none";
+                this.style.display = "none";
+
+                if (joker.roundCount > 1) {
+                    // after round 1
+                    this.parentNode.innerText = joker.currentRound[onlyName];
+                } else {
+                    // round 1
+                    this.parentNode.innerText = input.value;
+                }
+                
+                // Last Clicked
+				if (allClicked == joker.playerCount){
+					newRoundBtn.style.display = "inline-block";
+				} else {
+					allClicked++;
+					
+				}
+                // if not round 1 than add it onto
 				// return score
+			} // end of else 
 			});
 	}
 	newRoundBtn = document.getElementById("newRoundBtn");
 	newRoundBtn.style.display = "none";
+	allClicked = 1;
+
+    joker.lastPlayed = getDate(); // Update Last Played Date
+    // roundName = "round"+joker.roundCount;
+	// joker = addToObject(joker, roundName, makeRound(), 0);
 }
 
-/*
-function inputConfirm(id) {
-	var collumnId = id;
-	collumnId = collumnId.toString();
-	alert(collumnId);
-	collumnId = collumnId.slice(0, -1); // Removes the final i
-	alert(collumnId);
-	collumnId = collumnId.substring(0, collumnId.length - 1); // Removes the final i
-	var collumn = document.getElementById(collumnId); // collumn (box)
-	var span = document.getElementById(id+"i") // span
-	var input  = document.getElementById(id+"input") // input
-	var score = parseInt(input.value);
-	// span.style.display = "none"; 
-	// input.style.display = "none";
-	// collumn.innerText = score;
-	alert(score);
-}
-*/
+// function inputConfirm(id) {
+// }
 
 const startBtn = () => {
 	if (btnCounter == 1) {
@@ -214,12 +219,49 @@ const startBtn = () => {
 		joker = jason();
 		game.innerHTML = showNames();
 		game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
-		newRoundBtn.addEventListener("click", newRound);
+        newRoundBtn.addEventListener("click", newRound);
+        for (let i = 0; i < joker.playerCount; i++) {
+			// T O D O	F I X 
+			//joker.currentScorejoker.player[i]
+            // push joker.currentScore equals 0 or scores, maybe make function
+        }
 	} else {
 		// err ctrl
 		alert("internal error")
 		location.reload();
 	}
+}
+
+// call this by appending it to round+roundCount
+const makeRound = () => {
+    var obj = {};
+    for (let i = 0; i < joker.playerCount; i++) {
+        obj[joker.player[i]] = 0;
+    }
+    return obj;
+}
+
+const jason = () => {
+    var obj = {
+        name: gameName, 
+		lastPlayed: getDate(),
+		roundCount: 0,
+		playerCount: playerCount,
+        player: names,
+        currentScore: new Object()
+    };
+    for (let i = 0; i < obj.playerCount; i++) {
+        // addToObject(obj.currentScore, obj.player[i], 0, 0);
+       obj.currentScore[obj.player[i]] = 0;
+    }
+	return obj;
+}
+
+const getRoundCount = (offset) => {
+    var roundCount = 'round';
+    var off = (joker.roundCount) + offset;
+    roundCount += off;
+    return roundCount;
 }
 
 function getId(index) {
@@ -253,4 +295,37 @@ function validate(evt) {
 	  theEvent.returnValue = false;
 	  if(theEvent.preventDefault) theEvent.preventDefault();
 	}
-  }
+}
+
+var addToObject = function (obj, key, value, index) {
+
+	// Create a temp object and index variable
+	var temp = {};
+	var i = 0;
+
+	// Loop through the original object
+	for (var prop in obj) {
+		if (obj.hasOwnProperty(prop)) {
+
+			// If the indexes match, add the new item
+			if (i === index && key && value) {
+				temp[key] = value;
+			}
+
+			// Add the current item in the loop to the temp obj
+			temp[prop] = obj[prop];
+
+			// Increase the count
+			i++;
+
+		}
+	}
+
+	// If no index, add to the end
+	if (!index && key && value) {
+		temp[key] = value;
+	}
+
+	return temp;
+
+};

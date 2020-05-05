@@ -121,7 +121,7 @@ body {
   .column {
 	/* float: left; */
 	/* width: 33.33%; */
-	padding: 10px;
+    padding: 10px;
 	width: 125px;
 	height: 50px; /* Subject to change, could make seperate collumn for numbers that are smaller and aren't sticky */
 	font-size: 22px;
