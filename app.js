@@ -10,8 +10,6 @@ add first row position sticky so names stay
 
 */
 
-// global object
-
 // DOM References
 const newHeader = document.getElementById("newHeader");
 const loadHeader = document.getElementById("loadHeader");
@@ -108,6 +106,26 @@ newHeader.addEventListener("click", () => {
 	// once Start is press change text to confirm then go
 });
 
+const startBtn = () => {
+    if (btnCounter == 1) {
+        confirm();
+    } else if (btnCounter == 2) {
+        nameEntry();
+    } else if (btnCounter == 3) {
+        playerCountPage.style.display = "none";
+        game.style.display = "block";
+        joker = jason();
+        //window.GLOBAL_CONSTANT = jason(); // global game obj
+        game.innerHTML = showNames();
+        game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
+        newRoundBtn.addEventListener("click", newRound);
+    } else {
+        // err ctrl
+        alert("internal error")
+        location.reload();
+    }
+}
+
 // LOAD GAME
 loadHeader.addEventListener("click", () =>{	
 	// Object.entries(localStorage) // to see all the keys
@@ -144,9 +162,10 @@ var roundName;
 var allClicked = 1;
 var spans;
 function newRound() {
-    var z = `<div class="row">`;
 	joker.roundCount++ // Round Count goes up
     joker["round"+joker.roundCount] = makeRound(); // Creating an object to put this rounds scores into
+    // HTML Round Injection
+    var z = `<div class="row">`;
 	for (let i = 0; i < joker.playerCount; i++) {
 		var id = getId(i);
 		var color;
@@ -158,38 +177,38 @@ function newRound() {
 			color = `#e8e8e8`;
 		}
 		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" onkeypress='validate(event)' inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input></div>`;
-		//pattern="[0-9]*"
 	}
-	z += `</div>`;
+    z += `</div>`;
+    if ((joker.roundCount % joker.playerCount) == 0){
+        z += `<br>`
+        console.log("even")
+        // even
+    } else {
+        console.log("odd")
+        // odd
+    }
     game.insertAdjacentHTML("beforeend", z); // Injecting HTML Row
-
+    
     // Adding Functionality to checkmarks
 		for (let l = 0; l < joker.playerCount; l++) {
             spans = row[joker.roundCount].getElementsByTagName('span');
             
 			spans[l].addEventListener('click', function () {
                 var input = this.previousElementSibling;
-                var onlyName = this.parentNode.id.replace(/[0-9]/g, '');
+                var onlyName = this.parentNode.id.replace(/[0-9]/g, '').toLowerCase();
 				if ((input.value == "") || (input.value == undefined)) {
 					input.style.borderColor = "red";
 				} else {
                 input.style.display = "none";
                 this.style.display = "none";
-
-                if (joker.roundCount > 1) {
-                    // after round 1
-                    this.parentNode.innerText = joker.currentRound[onlyName];
-                } else {
-                    // round 1
-                    this.parentNode.innerText = input.value;
-                }
-                
-                // Last Clicked
+                joker.currentScore[onlyName] += parseInt(input.value);
+                var roundScore = joker.currentScore[onlyName];
+                this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
+                // Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
 					newRoundBtn.style.display = "inline-block";
 				} else {
 					allClicked++;
-					
 				}
                 // if not round 1 than add it onto
 				// return score
@@ -203,58 +222,35 @@ function newRound() {
     joker.lastPlayed = getDate(); // Update Last Played Date
     // roundName = "round"+joker.roundCount;
 	// joker = addToObject(joker, roundName, makeRound(), 0);
-}
+
+} // end of newRound function
 
 // function inputConfirm(id) {
 // }
 
-const startBtn = () => {
-	if (btnCounter == 1) {
-		confirm();
-	} else if (btnCounter == 2) {
-        nameEntry();
-	} else if (btnCounter == 3) {
-		playerCountPage.style.display = "none";
-		game.style.display = "block";
-		joker = jason();
-		game.innerHTML = showNames();
-		game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
-        newRoundBtn.addEventListener("click", newRound);
-        for (let i = 0; i < joker.playerCount; i++) {
-			// T O D O	F I X 
-			//joker.currentScorejoker.player[i]
-            // push joker.currentScore equals 0 or scores, maybe make function
-        }
-	} else {
-		// err ctrl
-		alert("internal error")
-		location.reload();
-	}
-}
-
-// call this by appending it to round+roundCount
-const makeRound = () => {
-    var obj = {};
-    for (let i = 0; i < joker.playerCount; i++) {
-        obj[joker.player[i]] = 0;
-    }
-    return obj;
-}
 
 const jason = () => {
     var obj = {
         name: gameName, 
-		lastPlayed: getDate(),
+        lastPlayed: getDate(),
 		roundCount: 0,
-		playerCount: playerCount,
+		playerCount: playerCount, /* could use player.length but this value comes first */
         player: names,
-        currentScore: new Object()
+        currentScore: {}
     };
-    for (let i = 0; i < obj.playerCount; i++) {
-        // addToObject(obj.currentScore, obj.player[i], 0, 0);
-       obj.currentScore[obj.player[i]] = 0;
+    // Would use makeRound exept joker is not declared yet (until now)
+    for (let i = 0; i < playerCount; i++) {
+        obj.currentScore[obj.player[i].toLowerCase()] = 0;
     }
 	return obj;
+}
+
+const makeRound = () => {
+    var obj = {};
+        for (let i = 0; i < joker.playerCount; i++) {
+            obj[joker.player[i].toLowerCase()] = 0;
+        }
+    return obj;
 }
 
 const getRoundCount = (offset) => {
