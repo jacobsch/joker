@@ -40,7 +40,7 @@ body {
 	cursor: pointer;
   }
   #newHeader:hover {
-	color: #344557;
+	color: #2b6197;
 	transition: .3s;
   }
   
@@ -56,8 +56,15 @@ body {
   
   #loadHeader {
 	color: #2ecc71;
+	transition: .3s;
+	cursor: pointer;
 	text-align: center;
-  }
+  }  
+  #loadHeader:hover {
+	color: #1c8749;
+	transition: .3s;
+}
+
   
   p {
 	position: absolute;
@@ -121,7 +128,7 @@ body {
   .column {
 	/* float: left; */
 	/* width: 33.33%; */
-    padding: 10px;
+	padding: 10px;
 	width: 125px;
 	height: 50px; /* Subject to change, could make seperate collumn for numbers that are smaller and aren't sticky */
 	font-size: 22px;
@@ -309,7 +316,7 @@ body {
 	
 	.nameInput {
 	  margin-top: 10px;
-	  width: 50%;
+	  width: 35%;
 	}
   
 	#start {
@@ -333,14 +340,14 @@ body {
 		width: 25%;
 	  }
 	.scoreInput {
-		width: 30px;
+		width: 40%;
 	}
   }
   
   @media (max-width: 420px) {
 	  .nameInput {
 		  margin-top: 10px;
-		  width: 100%;
+		  width: 80%;
 	  }
 	  .scoreInput {
 		  width: 35px;
