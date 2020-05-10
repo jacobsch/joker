@@ -8,6 +8,9 @@ with names of players followed by recently played date
 #TODO2
 add first row position sticky so names stay
 
+#TODO3 
+finish converting DOM display changes to changeDisplay
+
 */
 
 // DOM References
@@ -18,29 +21,28 @@ const playerCountPage = document.getElementById("playerCountPage");
 const start = document.getElementById("start");
 const warnHeader = document.getElementById("warn");
 const game = document.getElementById("game");
-const row = document.getElementsByClassName("row");
 const startHeader = document.getElementById("startHeader");
+const row = document.getElementsByClassName("row");
 
 // CURRENT GAME OBJ
 let joker;
 // #TODO -> Create function with parameter for option of style.display and element, class or tag
 // Opening Function, will run on load
 window.addEventListener('load',() => {
-    document.getElementsByTagName("h1")
-	game.style.display = "none";
-	playerCountPage.style.display = "none";
+	document.getElementsByTagName("h1")
+	changeDisplay(game, "none");
+	changeDisplay(playerCountPage, "none");
 	if (window.localStorage.length == 0) {
 		welcomeHeader.innerHTML = "Welcome, ";
-		loadHeader.style.display = "none";
+		changeDisplay(loadHeader, "none");
 	} else {
-		loadHeader.style.display = "inline";
+		changeDisplay(loadHeader, "inline");
 	}
 });
 
 var btnCounter=1;
 
 // Player Count Page
-// '+(i+1)+'
 let playerCount;
 function confirm() {   
 	var x = '';
@@ -56,16 +58,16 @@ function confirm() {
 			x += '<input class="nameInput" id="player'+(i+1)+'" type="text" placeholder="Player '+(i+1)+'" style="display: inline;"><br>'
 		}
 		x += '<br>';
-        x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>';
-        playerCountPage.innerHTML = x;
-        //start.insertAdjacentHTML("beforeend", '<h2 id="startHeader" class="headerBtn" style="display: inline;">Start</h2>');
-        btnCounter++;
+		x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>';
+		playerCountPage.innerHTML = x;
+		//start.insertAdjacentHTML("beforeend", '<h2 id="startHeader" class="headerBtn" style="display: inline;">Start</h2>');
+		btnCounter++;
 	}
 }
 
 // NAME ENTRY
 var names = [];
-var gameName = "";
+var gameKey = ""
 
 function nameEntry() {
 	var allGood = [];
@@ -78,14 +80,17 @@ function nameEntry() {
 		} else {
 			allGood[i] = true;
 			names[i] = playerNum.value;
-			gameName += playerNum.value + "-"; 
+			gameKey += playerNum.value + "-"; 
 			playerNum.style.borderColor = "green";
+		}
+		if (i === (playerCount-1)){
+
 		}
 	}	
 	if ((hasDuplicates(names).length) > 0) {
 		start.innerHTML += '<br> Please use unique names!';
 	} else if (Object.values(allGood).every(item => item === true)){
-		gameName = gameName.slice(0, -1); // Removes the final -
+		gameKey = gameKey.slice(0, -1); // Removes the final -
 		btnCounter++
 	} else {
 		// err control, shouldn't happen though
@@ -101,38 +106,42 @@ newHeader.addEventListener("click", () => {
 	welcomeHeader.style.display = "none";
 	newHeader.style.display = "none";
 	loadHeader.style.display = "none";
-    playerCountPage.style.display = "inline";
-    startHeader.addEventListener("click", startBtn);
-	// once Start is press change text to confirm then go
+	playerCountPage.style.display = "inline-block";
+	startHeader.addEventListener("click", startBtn);
 });
 
 const startBtn = () => {
-    if (btnCounter == 1) {
-        confirm();
-    } else if (btnCounter == 2) {
-        nameEntry();
-    } else if (btnCounter == 3) {
-        playerCountPage.style.display = "none";
-        game.style.display = "block";
-        joker = jason();
-        //window.GLOBAL_CONSTANT = jason(); // global game obj
-        game.innerHTML = showNames();
-        game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
-        newRoundBtn.addEventListener("click", newRound);
-    } else {
-        // err ctrl
-        alert("internal error")
-        location.reload();
-    }
+	if (btnCounter == 1) {
+		confirm();
+	} else if (btnCounter == 2) {
+		nameEntry();
+	} else if (btnCounter == 3) {
+		playerCountPage.style.display = "none";
+		game.style.display = "block";
+		joker = jason();
+		//window.GLOBAL_CONSTANT = jason(); // global game obj
+		game.innerHTML = showNames();
+		game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
+		newRoundBtn.addEventListener("click", newRound);
+		saveGame();
+	} else {
+		// err ctrl
+		alert("internal error")
+		location.reload();
+	}
 }
 
 // LOAD GAME
 loadHeader.addEventListener("click", () =>{	
-	// Object.entries(localStorage) // to see all the keys
+	changeDisplay(newHeader, "none");
+	//changeDisplay(loadHeader, "none");
+	var q = ``;
+	for (let i = 0; i < localStorage.length; i++) {
+		q += `<h2 class="loadedGames" id="${localStorage.key(i).toLowerCase()}">${localStorage.key(i)}<h2>`
+	}
+	console.log(q);
+	loadHeader.innerHTML = q;
 });
-
-
-
 
 function showNames() {
 	var y = `<div class="row">`;
@@ -158,14 +167,15 @@ function showNames() {
 	return y;
 }
 
+// NEW ROUND FUNCTION START
 var roundName;
 var allClicked = 1;
 var spans;
 function newRound() {
 	joker.roundCount++ // Round Count goes up
-    joker["round"+joker.roundCount] = makeRound(); // Creating an object to put this rounds scores into
-    // HTML Round Injection
-    var z = `<div class="row">`;
+	joker[getRoundCount()] = makeRound(); // Creating an object to put this rounds scores into
+	// HTML Round Injection
+	var z = `<div class="row">`;
 	for (let i = 0; i < joker.playerCount; i++) {
 		var id = getId(i);
 		var color;
@@ -178,39 +188,38 @@ function newRound() {
 		}
 		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" onkeypress='validate(event)' inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input></div>`;
 	}
-    z += `</div>`;
-    if ((joker.roundCount % joker.playerCount) == 0){
-        z += `<br>`
-        console.log("even")
-        // even
-    } else {
-        console.log("odd")
-        // odd
-    }
-    game.insertAdjacentHTML("beforeend", z); // Injecting HTML Row
-    
-    // Adding Functionality to checkmarks
+	z += `</div>`;
+	if ((joker.roundCount % joker.playerCount) == 0){
+		z += `<br>`
+		// even
+	} else {
+		// odd
+	}
+	game.insertAdjacentHTML("beforeend", z); // Injecting HTML Row
+	
+	// Adding Functionality to Checkmarks once clicked
 		for (let l = 0; l < joker.playerCount; l++) {
-            spans = row[joker.roundCount].getElementsByTagName('span');
-            
+			spans = row[joker.roundCount].getElementsByTagName('span');
+			
 			spans[l].addEventListener('click', function () {
-                var input = this.previousElementSibling;
-                var onlyName = this.parentNode.id.replace(/[0-9]/g, '').toLowerCase();
+				var input = this.previousElementSibling;
+				var onlyName = this.parentNode.id.replace(/[0-9]/g, '').toLowerCase();
 				if ((input.value == "") || (input.value == undefined)) {
 					input.style.borderColor = "red";
 				} else {
-                input.style.display = "none";
-                this.style.display = "none";
-                joker.currentScore[onlyName] += parseInt(input.value);
-                var roundScore = joker.currentScore[onlyName];
-                this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
-                // Display New Round After Last Clicked Checkmark
+				input.style.display = "none";
+				this.style.display = "none";
+				joker.currentScore[onlyName] += parseInt(input.value);
+				joker[getRoundCount()][onlyName] = parseInt(input.value);
+				this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
+				// Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
+					saveGame();
 					newRoundBtn.style.display = "inline-block";
 				} else {
 					allClicked++;
 				}
-                // if not round 1 than add it onto
+				// if not round 1 than add it onto
 				// return score
 			} // end of else 
 			});
@@ -219,45 +228,60 @@ function newRound() {
 	newRoundBtn.style.display = "none";
 	allClicked = 1;
 
-    joker.lastPlayed = getDate(); // Update Last Played Date
-    // roundName = "round"+joker.roundCount;
-	// joker = addToObject(joker, roundName, makeRound(), 0);
-
+	joker.lastPlayed = getDate(); // Update Last Played Date
 } // end of newRound function
 
-// function inputConfirm(id) {
-// }
-
-
+// Learning Arrow Functions
 const jason = () => {
-    var obj = {
-        name: gameName, 
-        lastPlayed: getDate(),
+	var obj = {
+		key : gameKey,
+		lastPlayed: getDate(),
 		roundCount: 0,
 		playerCount: playerCount, /* could use player.length but this value comes first */
-        player: names,
-        currentScore: {}
-    };
-    // Would use makeRound exept joker is not declared yet (until now)
-    for (let i = 0; i < playerCount; i++) {
-        obj.currentScore[obj.player[i].toLowerCase()] = 0;
-    }
+		player: names,
+		currentScore: {}
+	};
+	// Would use makeRound exept joker is not declared yet (until now)
+	var temp = ''
+	for (let i = 0; i < playerCount; i++) {
+		if(i === playerCount-1){
+			temp = temp.slice(0, -1);
+			temp += ', '+obj.player[i];
+		} else {
+			temp += obj.player[i]+'-'.split("-").join(" ");
+		}
+		obj.currentScore[obj.player[i].toLowerCase()] = 0;
+	}
+	obj.name = temp;
 	return obj;
 }
 
 const makeRound = () => {
-    var obj = {};
-        for (let i = 0; i < joker.playerCount; i++) {
-            obj[joker.player[i].toLowerCase()] = 0;
-        }
-    return obj;
+	var obj = {};
+		for (let i = 0; i < joker.playerCount; i++) {
+			obj[joker.player[i].toLowerCase()] = 0;
+		}
+	return obj;
 }
 
-const getRoundCount = (offset) => {
-    var roundCount = 'round';
-    var off = (joker.roundCount) + offset;
-    roundCount += off;
-    return roundCount;
+function saveGame(){
+	localStorage.setItem(joker.name, JSON.stringify(joker));
+}
+
+const loadGame = (key) => {
+	var tempObj = JSON.parse(localStorage.getItem(key.toString()));
+	return tempObj;
+}
+
+const getRoundCount = (offset = 0) => {
+	var roundCount = 'round';
+	var off = (joker.roundCount) + offset;
+	roundCount += off;
+	return roundCount;
+}
+
+function changeDisplay(DOMreference, state){
+	DOMreference.style.display = state;
 }
 
 function getId(index) {
@@ -292,36 +316,3 @@ function validate(evt) {
 	  if(theEvent.preventDefault) theEvent.preventDefault();
 	}
 }
-
-var addToObject = function (obj, key, value, index) {
-
-	// Create a temp object and index variable
-	var temp = {};
-	var i = 0;
-
-	// Loop through the original object
-	for (var prop in obj) {
-		if (obj.hasOwnProperty(prop)) {
-
-			// If the indexes match, add the new item
-			if (i === index && key && value) {
-				temp[key] = value;
-			}
-
-			// Add the current item in the loop to the temp obj
-			temp[prop] = obj[prop];
-
-			// Increase the count
-			i++;
-
-		}
-	}
-
-	// If no index, add to the end
-	if (!index && key && value) {
-		temp[key] = value;
-	}
-
-	return temp;
-
-};

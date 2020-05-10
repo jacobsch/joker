@@ -222,7 +222,7 @@ body {
 	box-sizing: padding-box;
 	overflow: scroll;
 	white-space: nowrap;
-}
+  }
   
   @media (max-width: 1200px) {
 	  .column {
