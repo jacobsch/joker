@@ -132,17 +132,50 @@ const startBtn = () => {
 }
 
 // LOAD GAME
-loadHeader.addEventListener("click", () =>{	
+loadHeader.addEventListener("click", () => {	
 	changeDisplay(newHeader, "none");
 	//changeDisplay(loadHeader, "none");
-	var q = ``;
+	var q = `<div id="loadedGames">`;
 	for (let i = 0; i < localStorage.length; i++) {
-		q += `<h2 class="loadedGames" id="${localStorage.key(i).toLowerCase()}">${localStorage.key(i)}<h2>`
+		var tempLoad = loadGame(localStorage.key(i));
+		q += `<button type="button" id="${tempLoad.key}" class="collapsible">${tempLoad.name}</button>`;
+		q += `<div class="content">Last Played: ${tempLoad.lastPlayed} <i id="${`remove`+i}" class="fa fa-trash-o"></i><i id="${`play`+i}"class="fa fa-play" aria-hidden="true"></i></div>`;
 	}
-	console.log(q);
-	loadHeader.innerHTML = q;
-});
-
+	q += `</div>`
+	loadHeader.insertAdjacentHTML("afterend", q); // Injecting HTML
+	// Collapsible Elements Functionality
+	changeDisplay(loadHeader, "none");
+	var coll = document.getElementsByClassName("collapsible");
+	for (let i = 0; i < coll.length; i++) {
+		coll[i].addEventListener("click", function() {
+			this.classList.toggle("active");
+			var content = this.nextElementSibling;
+			if (content.style.display === "inline-block") {
+				changeDisplay(content, "none");
+			} else {
+				changeDisplay(content, "inline-block")
+			}
+		});
+		// Remove Game Btn
+		var tempRemoveElement = document.getElementById(`remove`+i);
+		tempRemoveElement.addEventListener("click", function(){
+			localStorage.removeItem(this.parentElement.previousElementSibling.innerText.toString());
+			location.reload();
+		});
+		// Play Game Btn
+		var tempPlayElement = document.getElementById(`play`+i);
+		tempPlayElement.addEventListener("click", function(){
+			document.getElementById('loadedGames').style.display = 'none';
+			joker = JSON.parse(localStorage.getItem(this.parentElement.previousElementSibling.innerText.toString()));
+			changeDisplay(game, 'block');
+			game.innerHTML = showNames();
+			game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
+			let newRoundBtn = document.getElementById('newRoundBtn');
+			newRoundBtn.style.display = 'block';
+			newRoundBtn.addEventListener("click", newRound);
+		});
+	}
+}); // END OF LOAD GAME
 function showNames() {
 	var y = `<div class="row">`;
 	for (let i = 0; i < joker.playerCount; i++) {
@@ -215,6 +248,7 @@ function newRound() {
 				// Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
 					saveGame();
+					console.log(joker.name+', '+JSON.stringify(joker));
 					newRoundBtn.style.display = "inline-block";
 				} else {
 					allClicked++;
@@ -234,7 +268,7 @@ function newRound() {
 // Learning Arrow Functions
 const jason = () => {
 	var obj = {
-		key : gameKey,
+		key : gameKey.toLowerCase(),
 		lastPlayed: getDate(),
 		roundCount: 0,
 		playerCount: playerCount, /* could use player.length but this value comes first */
@@ -245,10 +279,14 @@ const jason = () => {
 	var temp = ''
 	for (let i = 0; i < playerCount; i++) {
 		if(i === playerCount-1){
-			temp = temp.slice(0, -1);
-			temp += ', '+obj.player[i];
+			// Last name
+			temp += obj.player[i];
+		} else if (i === playerCount-2){
+			// Second last name
+			temp += obj.player[i]+' and '
 		} else {
-			temp += obj.player[i]+'-'.split("-").join(" ");
+			// Anything else
+			temp += obj.player[i]+', ';
 		}
 		obj.currentScore[obj.player[i].toLowerCase()] = 0;
 	}
@@ -316,3 +354,25 @@ function validate(evt) {
 	  if(theEvent.preventDefault) theEvent.preventDefault();
 	}
 }
+
+const loadHtml = function(parentElementId, filePath) {
+	const init = {
+		method : "GET",
+		headers : { "Content-Type" : "text/html" },
+		mode : "cors",
+		cache : "default"
+	};
+	const req = new Request(filePath, init);
+	fetch(req)
+		.then(function(response) {
+			return response.text();
+		})
+		.then(function(body) {
+			// Replace `#` char in case the function gets called `querySelector` or jQuery style
+			if (parentElementId.startsWith("#")) {
+				parentElementId.replace("#", "");
+			}
+			document.getElementById(parentElementId).innerHTML = body;
+
+		});
+};

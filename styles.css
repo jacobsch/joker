@@ -61,7 +61,7 @@ body {
 	color: #eb8c34;
 	transition: .3s;
 	cursor: pointer;
-    text-align: center;
+	text-align: center;
 }  
   #loadHeader:hover {
 	color: #bd6f28;
@@ -223,7 +223,55 @@ body {
 	overflow: scroll;
 	white-space: nowrap;
   }
+
+  /* Collapsible Start (ends at media) */
+  .collapsible {
+	background-color: #e3e3e3;
+	color: black;
+	cursor: pointer;
+	padding: 18px;
+	width: 55%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 20px;
+  }
   
+  .active, .collapsible:hover {
+	background-color: #b8b8b8;
+  }  
+  .content {
+	padding: 0 0 0 18px;
+	display: none;
+	overflow: hidden;
+	width: 55%;
+	text-align: left;
+	background-color: #cfcfcf;
+	font-size: 16px;
+  }
+
+  .playBtn {
+	  margin-top: 2px;
+	  margin-bottom: 2px;
+	  float: right;
+  }
+
+  i {
+	  margin-left: 16px;
+	  padding: 2px;
+	  float: right;
+	  transition: .3s;
+  }
+
+.fa-trash-o:hover {
+	color: red;
+	transition: .3s;
+  }
+.fa-play:hover {
+	color: #2ecc71;
+	transition: .3s;
+}
+
   @media (max-width: 1200px) {
 	  .column {
 		  width: 11%;
