@@ -222,6 +222,7 @@ function newRound() {
 		z += `<div class="column" id="${id}" style="background-color:${color};"><input class="scoreInput" id="${id+'input'}" type="text" onkeypress='validate(event)' inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input></div>`;
 	}
 	z += `</div>`;
+	// If statement to see if it is a new set
 	if ((joker.roundCount % joker.playerCount) == 0){
 		z += `<br>`
 		// even
@@ -244,7 +245,11 @@ function newRound() {
 				this.style.display = "none";
 				joker.currentScore[onlyName] += parseInt(input.value);
 				joker[getRoundCount()][onlyName] = parseInt(input.value);
-				this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
+                this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
+                // Round Winner Cell Turns Green
+                if (input.value<= 0) {
+                    document.getElementById(onlyName+joker.roundCount).style.backgroundColor = '#8acc76';
+                }
 				// Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
 					saveGame();
