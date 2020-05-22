@@ -1,15 +1,7 @@
-// app.js written by Jacob Schwartz
-/*
+/* written by Jacob Schwartz
 
-#TODO
-create function to generate name -> display a list of games
-with names of players followed by recently played date
-
-#TODO2
+#TODO1
 add first row position sticky so names stay
-
-#TODO3 
-finish converting DOM display changes to changeDisplay
 
 */
 
@@ -26,10 +18,9 @@ const row = document.getElementsByClassName("row");
 
 // CURRENT GAME OBJ
 let joker;
-// #TODO -> Create function with parameter for option of style.display and element, class or tag
+
 // Opening Function, will run on load
 window.addEventListener('load',() => {
-	document.getElementsByTagName("h1")
 	changeDisplay(game, "none");
 	changeDisplay(playerCountPage, "none");
 	if (window.localStorage.length == 0) {
@@ -103,10 +94,10 @@ let hasDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != inde
 
 // NEW GAME
 newHeader.addEventListener("click", () => {
-	welcomeHeader.style.display = "none";
-	newHeader.style.display = "none";
-	loadHeader.style.display = "none";
-	playerCountPage.style.display = "inline-block";
+    changeDisplay(welcomeHeader, "none");
+    changeDisplay(newHeader, "none");
+    changeDisplay(loadHeader, "none");
+    changeDisplay(playerCountPage, "inline-block");
 	startHeader.addEventListener("click", startBtn);
 });
 
@@ -116,8 +107,8 @@ const startBtn = () => {
 	} else if (btnCounter == 2) {
 		nameEntry();
 	} else if (btnCounter == 3) {
-		playerCountPage.style.display = "none";
-		game.style.display = "block";
+        changeDisplay(playerCountPage, "none");
+        changeDisplay(game, "block");
 		joker = jason();
 		//window.GLOBAL_CONSTANT = jason(); // global game obj
 		game.innerHTML = showNames();
@@ -170,8 +161,8 @@ loadHeader.addEventListener("click", () => {
 			changeDisplay(game, 'block');
 			game.innerHTML = showNames();
 			game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
-			let newRoundBtn = document.getElementById('newRoundBtn');
-			newRoundBtn.style.display = 'block';
+            let newRoundBtn = document.getElementById('newRoundBtn');
+            changeDisplay(newRoundBtn, 'block');
 			newRoundBtn.addEventListener("click", newRound);
 		});
 	}
@@ -241,8 +232,8 @@ function newRound() {
 				if ((input.value == "") || (input.value == undefined)) {
 					input.style.borderColor = "red";
 				} else {
-				input.style.display = "none";
-				this.style.display = "none";
+                changeDisplay(input, "none");
+                changeDisplay(this, "none");
 				joker.currentScore[onlyName] += parseInt(input.value);
 				joker[getRoundCount()][onlyName] = parseInt(input.value);
                 this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
@@ -253,8 +244,8 @@ function newRound() {
 				// Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
 					saveGame();
-					console.log(joker.name+', '+JSON.stringify(joker));
-					newRoundBtn.style.display = "inline-block";
+                    console.log(joker.name+', '+JSON.stringify(joker));
+                    changeDisplay(newRoundBtn, "inline-block");
 				} else {
 					allClicked++;
 				}
@@ -263,8 +254,8 @@ function newRound() {
 			} // end of else 
 			});
 	}
-	newRoundBtn = document.getElementById("newRoundBtn");
-	newRoundBtn.style.display = "none";
+    newRoundBtn = document.getElementById("newRoundBtn");
+    changeDisplay(newRoundBtn, "none");
 	allClicked = 1;
 
 	joker.lastPlayed = getDate(); // Update Last Played Date
@@ -359,25 +350,3 @@ function validate(evt) {
 	  if(theEvent.preventDefault) theEvent.preventDefault();
 	}
 }
-
-const loadHtml = function(parentElementId, filePath) {
-	const init = {
-		method : "GET",
-		headers : { "Content-Type" : "text/html" },
-		mode : "cors",
-		cache : "default"
-	};
-	const req = new Request(filePath, init);
-	fetch(req)
-		.then(function(response) {
-			return response.text();
-		})
-		.then(function(body) {
-			// Replace `#` char in case the function gets called `querySelector` or jQuery style
-			if (parentElementId.startsWith("#")) {
-				parentElementId.replace("#", "");
-			}
-			document.getElementById(parentElementId).innerHTML = body;
-
-		});
-};
