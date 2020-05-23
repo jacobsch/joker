@@ -38,7 +38,14 @@
   </div>
   
   	<p>By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
-	<script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script>
+        if('serviceWorker' in navigator) {
+        navigator.serviceWorker
+                .register('/sw.js')
+                .then(function() { console.log("Service Worker Registered"); });
+        }
+    </script>
 	<noscript>
 		This website does not work without JavaScript!
 	</noscript>
