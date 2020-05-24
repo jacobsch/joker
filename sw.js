@@ -9,7 +9,19 @@ self.addEventListener('install', e => {
         `/`,
         `/index.html`,
         `/styles.css`,
-        `/app.js`
+        `/app.js`,
+        `/sw.js`,
+        `/cache-polyfill.js`,
+        `/img/site.webmanifest`,
+        `/img/browserconfig.xml`,
+        `/img/android-chrome-192x192.png`,
+        `/img/android-chrome-512x512.png`,
+        `/img/apple-touch-icon.png`,
+        `/img/favicon-16x16.png`,
+        `/img/favicon-32x32.png`,
+        `/img/favicon.ico`,
+        `/img/mstile-150x150.png`,
+        `/img/safari-pinned-tab.svg`
       ])
           .then(() => self.skipWaiting());
     })
