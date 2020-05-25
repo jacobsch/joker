@@ -48,10 +48,15 @@
   	<p>By <em><a href="https://jacob-schwartz.com">Jacob Schwartz</a></p>
     <script type="text/javascript" src="app.js"></script>
     <script>
-        if('serviceWorker' in navigator) {
-        navigator.serviceWorker
-                .register('/sw.js')
-                .then(function() { console.log("Service Worker Registered"); });
+        if ('serviceWorker' in navigator)  {
+        navigator.serviceWorker.register('/sw.js', {scope: '/'})
+        .then((reg) => {
+            // registration worked
+            console.log('Registration succeeded. Scope is ' + reg.scope);
+        }).catch((error) => {
+            // registration failed
+            console.log('Registration failed with ' + error);
+        });
         }
     </script>
 	<noscript>

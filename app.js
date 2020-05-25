@@ -31,8 +31,6 @@ window.addEventListener('load',() => {
 	}
 });
 
-var btnCounter=1;
-
 // Player Count Page
 let playerCount;
 function confirm() {   
@@ -92,23 +90,24 @@ function nameEntry() {
 // Duplicate Check
 let hasDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
 
-// NEW GAME
+// NEW GAME BUTTON
 newHeader.addEventListener("click", () => {
-    changeDisplay(welcomeHeader, "none");
-    changeDisplay(newHeader, "none");
-    changeDisplay(loadHeader, "none");
-    changeDisplay(playerCountPage, "inline-block");
+	changeDisplay(welcomeHeader, "none");
+	changeDisplay(newHeader, "none");
+	changeDisplay(loadHeader, "none");
+	changeDisplay(playerCountPage, "inline-block");
 	startHeader.addEventListener("click", startBtn);
 });
 
+var btnCounter = 1;
 const startBtn = () => {
 	if (btnCounter == 1) {
 		confirm();
 	} else if (btnCounter == 2) {
 		nameEntry();
 	} else if (btnCounter == 3) {
-        changeDisplay(playerCountPage, "none");
-        changeDisplay(game, "block");
+		changeDisplay(playerCountPage, "none");
+		changeDisplay(game, "block");
 		joker = jason();
 		//window.GLOBAL_CONSTANT = jason(); // global game obj
 		game.innerHTML = showNames();
@@ -161,8 +160,8 @@ loadHeader.addEventListener("click", () => {
 			changeDisplay(game, 'block');
 			game.innerHTML = showNames();
 			game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
-            let newRoundBtn = document.getElementById('newRoundBtn');
-            changeDisplay(newRoundBtn, 'block');
+			let newRoundBtn = document.getElementById('newRoundBtn');
+			changeDisplay(newRoundBtn, 'block');
 			newRoundBtn.addEventListener("click", newRound);
 		});
 	}
@@ -232,20 +231,20 @@ function newRound() {
 				if ((input.value == "") || (input.value == undefined)) {
 					input.style.borderColor = "red";
 				} else {
-                changeDisplay(input, "none");
-                changeDisplay(this, "none");
+				changeDisplay(input, "none");
+				changeDisplay(this, "none");
 				joker.currentScore[onlyName] += parseInt(input.value);
 				joker[getRoundCount()][onlyName] = parseInt(input.value);
-                this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
-                // Round Winner Cell Turns Green
-                if (input.value<= 0) {
-                    document.getElementById(onlyName+joker.roundCount).style.backgroundColor = '#8acc76';
-                }
+				this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
+				// Round Winner Cell Turns Green
+				if (input.value<= 0) {
+					document.getElementById(onlyName+joker.roundCount).style.backgroundColor = '#8acc76';
+				}
 				// Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
 					saveGame();
-                    console.log(joker.name+', '+JSON.stringify(joker));
-                    changeDisplay(newRoundBtn, "inline-block");
+					console.log(joker.name+', '+JSON.stringify(joker));
+					changeDisplay(newRoundBtn, "inline-block");
 				} else {
 					allClicked++;
 				}
@@ -254,8 +253,8 @@ function newRound() {
 			} // end of else 
 			});
 	}
-    newRoundBtn = document.getElementById("newRoundBtn");
-    changeDisplay(newRoundBtn, "none");
+	newRoundBtn = document.getElementById("newRoundBtn");
+	changeDisplay(newRoundBtn, "none");
 	allClicked = 1;
 
 	joker.lastPlayed = getDate(); // Update Last Played Date
@@ -298,7 +297,7 @@ const makeRound = () => {
 	return obj;
 }
 
-function saveGame(){
+const saveGame = () => {
 	localStorage.setItem(joker.name, JSON.stringify(joker));
 }
 
@@ -314,39 +313,41 @@ const getRoundCount = (offset = 0) => {
 	return roundCount;
 }
 
-function changeDisplay(DOMreference, state){
+const changeDisplay = (DOMreference, state) => {
 	DOMreference.style.display = state;
 }
 
-function getId(index) {
+const getId = (index) => {
 	var id = joker.player[index].toLowerCase();
 	id += joker.roundCount;
 	return id;
 }
 
-function getDate() {
+const getDate = () => {
 	var today = new Date();
 	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
 	var yyyy = today.getFullYear();
 	today = mm + '/' + dd + '/' + yyyy;
 	return today;
 }
 
-function validate(evt) {
-	var theEvent = evt || window.event;
-  
-	// Handle paste
-	if (theEvent.type === 'paste') {
+const validate = (evt) => {
+	var caller = evt || window.event; 
+	// If the passthrough event is false, undefined, 0, Nan etc it will be replaced with window.event
+	var key;
+	if (caller.type === 'paste') {
+		// Handle paste events
 		key = event.clipboardData.getData('text/plain');
 	} else {
-	// Handle key press
-		var key = theEvent.keyCode || theEvent.which;
+		// Handle key presses
+		key = caller.keyCode || caller.which;
+		// If caller.keyCode is false, undefined, 0, Nan etc it will be replaced with caller.which
 		key = String.fromCharCode(key);
 	}
-	var regex = /^[\d-]+$/;
-	if( !regex.test(key) ) {
-	  theEvent.returnValue = false;
-	  if(theEvent.preventDefault) theEvent.preventDefault();
+	var regex = /^[\d-]+$/; // Regular Expression that allows for numbers and '-'
+	if(!regex.test(key)) {
+		caller.returnValue = false;
+		if(caller.preventDefault) caller.preventDefault(); // If not explicitly handled, don't handle the event
 	}
 }

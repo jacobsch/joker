@@ -1,5 +1,6 @@
-importScripts('/cache-polyfill.js');
+importScripts('/cache-polyfill.js'); // If browser doesn't support native caching
 
+// New SW
 const version = "0.1";
 const cacheName = `jokerSW-${version}`;
 self.addEventListener('install', e => {
@@ -28,10 +29,12 @@ self.addEventListener('install', e => {
   );
 });
 
+// When SW is activated (if there is a new version the SW will activate once the page closes)
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
+// Fetching the cached files instead of pulling new ones from the web 
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.open(cacheName)
