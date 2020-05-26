@@ -49,7 +49,6 @@ function confirm() {
 		x += '<br>';
 		x += '<h2 id="startHeader" class="headerBtn" onclick="startBtn()" style="display: inline;">Start</h2>';
 		playerCountPage.innerHTML = x;
-		//start.insertAdjacentHTML("beforeend", '<h2 id="startHeader" class="headerBtn" style="display: inline;">Start</h2>');
 		btnCounter++;
 	}
 }
@@ -86,7 +85,6 @@ function nameEntry() {
 	}
 }
 
-// #TODO FIX
 // Duplicate Check
 let hasDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
 
@@ -108,8 +106,7 @@ const startBtn = () => {
 	} else if (btnCounter == 3) {
 		changeDisplay(playerCountPage, "none");
 		changeDisplay(game, "block");
-		joker = jason();
-		//window.GLOBAL_CONSTANT = jason(); // global game obj
+		joker = jason(); // global game obj
 		game.innerHTML = showNames();
 		game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
 		newRoundBtn.addEventListener("click", newRound);
@@ -124,7 +121,6 @@ const startBtn = () => {
 // LOAD GAME
 loadHeader.addEventListener("click", () => {	
 	changeDisplay(newHeader, "none");
-	//changeDisplay(loadHeader, "none");
 	var q = `<div id="loadedGames">`;
 	for (let i = 0; i < localStorage.length; i++) {
 		var tempLoad = loadGame(localStorage.key(i));
@@ -191,7 +187,6 @@ loadHeader.addEventListener("click", () => {
                         loadedScores += `${tempCurrentScore[joker.player[i].toLowerCase()]}`;
                     } else {
                         // After first round
-                        // tempCurrentScore[joker.player[i]] += score;
                         loadedScores += `${tempCurrentScore[joker.player[i].toLowerCase()]}`;                        
                     }
                     loadedScores += `</div>`;
