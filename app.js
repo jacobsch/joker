@@ -387,8 +387,7 @@ const loadGame = (key) => {
 
 const getRoundCount = (offset = 0) => {
 	var roundCount = 'round';
-	var off = (joker.roundCount) + offset;
-	roundCount += off;
+	roundCount += (joker.roundCount + offset);
 	return roundCount;
 }
 
