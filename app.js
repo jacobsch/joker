@@ -158,7 +158,87 @@ loadHeader.addEventListener("click", () => {
 			document.getElementById('loadedGames').style.display = 'none';
 			joker = JSON.parse(localStorage.getItem(this.parentElement.previousElementSibling.innerText.toString()));
 			changeDisplay(game, 'block');
-			game.innerHTML = showNames();
+            game.innerHTML = showNames();
+            var loadedScores;
+            var tempCurrentScore = makeRound();
+            // for every round of joker
+            for (let x = 1; x <= joker.roundCount; x++) {
+                loadedScores = `<div class="row">`;
+                // for every player within that round
+                for (let i = 0; i < joker.playerCount; i++) {
+                    tempCurrentScore[joker.player[i].toLowerCase()] += joker[getRoundCount((-Math.abs(joker.roundCount) + x))][joker.player[i].toLowerCase()];
+                    var id = getId(i, (-Math.abs(joker.roundCount) + x));
+                    var color;
+                    if (i % 2 == 0) {
+                        // even
+                        color = `#cfcfcf`;
+                    }else {
+                        // odd
+                        color = `#e8e8e8`;
+                    }
+                    // Highlight round winning cell
+                    if ((joker[getRoundCount((-Math.abs(joker.roundCount) + x))][joker.player[i].toLowerCase()]) < 0) {
+                        color = '#8acc76';
+                    }
+                    var allow = false;
+                    loadedScores += `<div class="column" id="${id}" style="background-color:${color};">`;
+                    if ((joker[getRoundCount((-Math.abs(joker.roundCount)) + x)][joker.player[i].toLowerCase()]) == 0) {
+                        // If that specific cell is empty, reprompt user
+                        loadedScores += `<input class="scoreInput" id="${id+'input'}" type="text" onkeypress='validate(event)' inputmode="numeric"> <span `/*onclick="inputConfirm(${id})" */+`>&#10003;</span></input>`;
+                        allow = true;
+                    } else if (x == 1) {
+                        // If it's the first round
+                        loadedScores += `${tempCurrentScore[joker.player[i].toLowerCase()]}`;
+                    } else {
+                        // After first round
+                        // tempCurrentScore[joker.player[i]] += score;
+                        loadedScores += `${tempCurrentScore[joker.player[i].toLowerCase()]}`;                        
+                    }
+                    loadedScores += `</div>`;
+                }
+                loadedScores += `</div>`;
+                // If statement to see if it is a new set
+                if ((x % joker.playerCount) == 0){
+                    loadedScores += `<br>`
+                    // even
+                } else {
+                    // odd
+                }
+                game.insertAdjacentHTML("beforeend", loadedScores);
+                if (allow == true) {
+                    // Adding Functionality to Checkmarks once clicked
+                    var spans = row[joker.roundCount].getElementsByTagName('span');
+                    for (let l = 0; l < spans.length; l++) {
+                        spans[l].addEventListener('click', function () {
+                            var input = this.previousElementSibling;
+                            var onlyName = this.parentNode.id.replace(/[0-9]/g, '').toLowerCase();
+                            if ((input.value == "") || (input.value == undefined)) {
+                                input.style.borderColor = "red";
+                            } else {
+                            changeDisplay(input, "none");
+                            changeDisplay(this, "none");
+                            joker.currentScore[onlyName] += parseInt(input.value);
+                            joker[getRoundCount()][onlyName] = parseInt(input.value);
+                            this.parentNode.innerText = joker.currentScore[onlyName]; // populate cell with value
+                            // Round Winner Cell Turns Green
+                            if (input.value<= 0) {
+                                document.getElementById(onlyName+joker.roundCount).style.backgroundColor = '#8acc76';
+                            }
+                            saveGame();
+                            // Display New Round After Last Clicked Checkmark
+                            if (allClicked == joker.playerCount){
+                                // saveGame();
+                                changeDisplay(newRoundBtn, "inline-block");
+                            } else {
+                                allClicked++;
+                            }
+                            // if not round 1 than add it onto
+                            // return score
+                        } // end of else 
+                        });
+                }
+            }        
+            } // End of big for loop for rounds
 			game.insertAdjacentHTML("afterend", `<h4 id="newRoundBtn">New Round</h4>`)
 			let newRoundBtn = document.getElementById('newRoundBtn');
 			changeDisplay(newRoundBtn, 'block');
@@ -169,13 +249,12 @@ loadHeader.addEventListener("click", () => {
 function showNames() {
 	var y = `<div class="row">`;
 	for (let i = 0; i < joker.playerCount; i++) {
-		var id = joker.player[i].toLowerCase();
+		var id = joker.player[i].toLowerCase() + 0;
 		// Easter Egg Start
 		if (id == "jana") {
 			joker.player[i] += "🍌"
-		}
+		};
 		// EE End
-		id += joker.roundCount;
 		var color;
 		if (i % 2 == 0) {
 			// even
@@ -239,11 +318,11 @@ function newRound() {
 				// Round Winner Cell Turns Green
 				if (input.value<= 0) {
 					document.getElementById(onlyName+joker.roundCount).style.backgroundColor = '#8acc76';
-				}
+                }
+                saveGame();
 				// Display New Round After Last Clicked Checkmark
 				if (allClicked == joker.playerCount){
-					saveGame();
-					console.log(joker.name+', '+JSON.stringify(joker));
+					// saveGame();
 					changeDisplay(newRoundBtn, "inline-block");
 				} else {
 					allClicked++;
@@ -317,9 +396,9 @@ const changeDisplay = (DOMreference, state) => {
 	DOMreference.style.display = state;
 }
 
-const getId = (index) => {
+const getId = (index, offset = 0) => {
 	var id = joker.player[index].toLowerCase();
-	id += joker.roundCount;
+	id += (joker.roundCount+offset);
 	return id;
 }
 
