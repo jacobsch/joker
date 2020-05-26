@@ -1,8 +1,6 @@
-/* written by Jacob Schwartz
-
-#TODO1
-add first row position sticky so names stay
-
+/*
+app.js for Joker Score Keeper
+AP Computer Science Principles Create Project
 */
 
 // DOM References
@@ -28,7 +26,8 @@ window.addEventListener('load',() => {
 		changeDisplay(loadHeader, "none");
 	} else {
 		changeDisplay(loadHeader, "inline");
-	}
+    }
+    loadRules();
 });
 
 // Player Count Page
@@ -369,6 +368,20 @@ const makeRound = () => {
 			obj[joker.player[i].toLowerCase()] = 0;
 		}
 	return obj;
+}
+
+const loadRules = () => {
+    var rulesFile = new XMLHttpRequest();
+    var txt = "Error 404: file not found"
+    rulesFile.onreadystatechange = () => {
+        if ((rulesFile.readyState === XMLHttpRequest.DONE) && (rulesFile.status == 200)) {
+            txt = rulesFile.responseText;
+            // txt = txt.split("\n").join("<br>"); // No need because of pre-wrap whitespace
+        }
+        document.getElementById('theRules').innerHTML = txt;
+    }
+    rulesFile.open("GET", "/rules.txt", true);
+    rulesFile.send(null);
 }
 
 const saveGame = () => {

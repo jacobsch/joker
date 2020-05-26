@@ -19,6 +19,7 @@ body {
 	-ms-user-select: none;
 	user-select: none;
 	cursor: default;
+	overflow: auto;
 }
   
   * {
@@ -273,64 +274,68 @@ body {
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
-    transition: opacity 500ms;
-    visibility: hidden;
-    opacity: 0;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.5);
+	transition: opacity .3s;
+	visibility: hidden;
+	opacity: 0;
   }
   .overlay:target {
-    visibility: visible;
-    opacity: 1;
+	visibility: visible;
+	opacity: 1;
   }
   
   .clear {
-      height: 100vh;
-      width: 100%;
-      position: absolute;
-      top: 0;
+	  height: 100vh;
+	  width: 100%;
+	  position: absolute;
+	  top: 0;
   }
   
   .popup {
-    margin: 70px auto;
-    padding: 20px;
-    background: #c7c7c7;
-    border-radius: 5px;
-    width: 30%;
-    position: relative;
-    transition: all 5s ease-in-out;
+	margin: 70px auto;
+	padding: 20px;
+	background: #c7c7c7;
+	border-radius: 5px;
+	width: 65%;
+	position: relative;
+	transition: all 5s ease-in-out;
   }
   
   .popup h2 {
-    margin-top: 0;
-    color: #000000;
-    font-family: Tahoma, Arial, sans-serif;
+	margin: 0px auto;
+	color: #000000;
+	font-family: Tahoma, Arial, sans-serif;
   }
   .popup .close {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    transition: all 200ms;
-    font-size: 30px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #000000;
+	position: absolute;
+	top: 20px;
+	right: 30px;
+	transition: all 200ms;
+	font-size: 30px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #000000;
   }
   .popup .close:hover {
-    color: #ff0000;
+	color: #ff0000;
   }
-  .popup .theRules {
-    max-height: 30%;
-    overflow: auto;
-  }
+	.popup #theRules {
+		margin-top: 2px;
+		max-height: 30%;
+		/* overflow: auto; */
+		/* word-break: break-word; */
+		white-space: pre-wrap;
+		overflow-wrap: normal;
+	}
   
-  .theRules {
-      line-height: 1.5em;
-  }
+	#theRules {
+		line-height: normal;
+	}
 
   @media (max-width: 1200px) {
 	  .column {
@@ -347,6 +352,9 @@ body {
 	  }
 	  .scoreInput {
 		width: 45px;
+	  }
+	  .popup {
+		  width: 95%;
 	  }
 }
   
@@ -454,32 +462,35 @@ body {
 
 	.column {
 		width: 25%;
-	  }
+	}
 	.scoreInput {
 		width: 40%;
 	}
-  }
+	.popup {
+		width: 100%;
+	}
+}
   
   @media (max-width: 420px) {
-	  .nameInput {
-		  margin-top: 10px;
-		  width: 80%;
-	  }
-	  .scoreInput {
-		  width: 35px;
-	  }
-  }
+	.nameInput {
+		margin-top: 10px;
+		width: 80%;
+	}
+	.scoreInput {
+		width: 35px;
+	}
+}
   
   @media (max-width: 319px) {
 	h3 {
-	  float: none;
-	  position: absolute;
-	  left: 0;
+		float: none;
+		position: absolute;
+		left: 0;
 	}
 	#example {
-	  left: 20px;
+		left: 20px;
 	}
-  }
+}
   
   
   label {

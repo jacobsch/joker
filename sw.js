@@ -1,7 +1,7 @@
 importScripts('/cache-polyfill.js'); // If browser doesn't support native caching
 
 // New SW
-const version = "0.1";
+const version = "0.11";
 const cacheName = `jokerSW-${version}`;
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -12,6 +12,7 @@ self.addEventListener('install', e => {
         `/styles.css`,
         `/app.js`,
         `/sw.js`,
+        `/rules.txt`,
         `/cache-polyfill.js`,
         `/img/site.webmanifest`,
         `/img/browserconfig.xml`,

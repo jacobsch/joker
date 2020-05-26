@@ -1,0 +1,31 @@
+﻿Set Up the Playing Deck:
+1. Obtain two standard 54 card decks in red and black
+2. Make sure there are 4 joker wildcards in total from both decks
+3. There should be a total of 108 cards 
+4. Shuffle the two decks together 
+
+Set Up to Deal:
+1. The first person’s name on the Joker Score Keeper will cut the deck at any point they choose 
+2. That person will look at the bottom 3 cards of their cut in an attempt to find a joker
+   1. Place the bottom card of the 3 face up underneath this deck (called the bottom card) 
+3. Deal the rest of the deck starting from the top 
+   1. Each person receives a total of 14 cards, and the starting first person gets 15
+
+What Certain Cards are Worth:
+1. Jokers are wildcards and can be used as a substitute for any card 
+2. Jacks, Queens, and Kings are worth 10 points 
+3. Aces can count as 1 (as in 1, 2, 3) or 10 (when following the King or next to 2 different aces)
+
+To Go Down:
+In order to be able to lay down your cards, you must:
+1. It must be the 4th round of the game (ie. each person has thrown out and picked up a card 4 times)
+2. Have 15 cards on your turn
+3. You must add up the total worth of the cards you are laying down and must equal a minimum of 51
+4. You must have a “straight” included in the cards you lay down
+   1. A straight consists of a minimum of 3 cards from the same suit and colour in consecutive order 
+
+Scoring for Closing:
+1. -5, - 25, -50 goes to the player who closed 
+   a. In either case the objective is to have the least amount of points yourself while making your opponents’ score go up: this is done by “closing”
+      i. Get rid of all your cards by going down, adding to your opponents’ cards, and using your last card to play it face down on the throw-out pile, signaling the end of the game 
+      ii. If you close with the bottom card and don’t add to your opponents cards, anyone who did not go down receives 300 points or triple if they did, if you close without help without the bottom card it’s 200 points or double for your opponents, and if you close after a few rounds of going down it’s 100 or the sum of their cards
